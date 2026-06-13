@@ -434,14 +434,15 @@
           </p>
         </header>
 
-        <!-- 送信先は Web3Forms（アカウント不要・無料・メールで届く）。
-             下の access_key を自分のキーに差し替えてください（README参照）。 -->
-        <form class="form" id="requestForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
-          <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
-          <input type="hidden" name="subject" value="【お見積もり依頼】Web修正・Excelマクロ 窓口" />
-          <input type="hidden" name="from_name" value="ご依頼窓口" />
-          <!-- ハニーポット（ボットだけが入力する隠しフィールド） -->
-          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <!-- 送信先は Formsubmit.co（アカウント不要・CAPTCHA不要・無料）。
+             action のメールアドレス宛に届く。初回送信時に届く有効化メールのリンクを
+             1回クリックすると以降の送信が配信される（README参照）。 -->
+        <form class="form" id="requestForm" action="https://formsubmit.co/hayaboosan@gmail.com" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="【お見積もり依頼】Web修正・Excelマクロ 窓口" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <!-- ハニーポット（ボットだけが入力する隠しフィールド・Formsubmit の _honey） -->
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <div class="field">
             <label for="f-name">お名前 / ご担当者名<span class="req">必須</span></label>
@@ -598,26 +599,22 @@
           return;
         }
 
-        // access_key 未設定のときは送信せず案内（公開前の取り違え防止）
-        var key = form.querySelector('[name="access_key"]').value;
-        if (!key || key === 'YOUR_WEB3FORMS_ACCESS_KEY') {
-          showStatus('err', '送信先が未設定です（サイト管理者へ：Web3Forms の access_key を設定してください）。');
-          return;
-        }
-
         submitBtn.disabled = true;
         var original = submitBtn.textContent;
         submitBtn.textContent = '送信中…';
         showStatus('ok', '送信しています…');
 
-        fetch(form.action, {
+        // Formsubmit の Ajax エンドポイント（JSONで結果が返る）へ送信
+        var endpoint = form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+        fetch(endpoint, {
           method: 'POST',
           body: new FormData(form),
           headers: { 'Accept': 'application/json' }
         })
           .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
           .then(function (r) {
-            if (r.ok && r.data.success) {
+            // Formsubmit は success を文字列 "true" で返す
+            if (r.ok && (r.data.success === true || r.data.success === 'true')) {
               form.reset();
               showStatus('ok', 'お見積もり依頼を受け付けました。内容を確認のうえ、原則2日以内（目安）にご返信します。ありがとうございます。');
               submitBtn.textContent = '送信しました';
