@@ -13,6 +13,8 @@
           ? saved
           : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        var m = document.getElementById('themeColorMeta');
+        if (m) m.setAttribute('content', theme === 'dark' ? '#14161b' : '#f5f3ee');
       } catch (e) {}
     })();
   </script>
