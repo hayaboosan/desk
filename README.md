@@ -91,6 +91,19 @@ gh api -X POST repos/hayaboosan/<リポジトリ名>/pages -f "source[branch]=ma
 - **料金**：`#price` のテーブル。ポートフォリオの「ご依頼について」と数字を揃えてある。
 - **連絡先の見せ方**：今はフォームのみ（メール直書きなし＝スパム対策）。
 
+## ダークモード（配色テーマ）
+
+`index.html` 単体で完結。ライト/ダークの2テーマに対応する。
+
+- **判定の優先順位**：①利用者が当サイトのトグルで選んだ設定（`localStorage` の `tegumi-theme`）→ ②OS/ブラウザの設定（`prefers-color-scheme`）。手動選択がない間は OS 設定に追従する。
+- **ちらつき防止**：`<head>` 内の小さなインラインスクリプトが、描画前に `<html data-theme="...">` を確定させる（FOUC なし）。
+- **切り替え UI**：ヘッダー右の丸いボタン（`#themeToggle`・月/太陽アイコン）。JS が動く環境でだけ表示（無効時は出ない）。スマホ幅でも表示される。
+- **JS 無効時**：トグルは出ないが、OS がダークなら `@media (prefers-color-scheme: dark)` のフォールバックで自動的にダーク表示になる。
+- **色の調整**：CSS の `:root`（ライト既定値）と `:root[data-theme="dark"]`（ダーク上書き）の2か所でカラートークンを管理。ダーク値を変えるときは `:root[data-theme="dark"]` と、その下の `@media (prefers-color-scheme: dark)` フォールバック（同じ値）の**両方**を揃えること。
+  - 主なトークン：`--ink`/`--ink-soft`/`--ink-faint`（文字）、`--bg`/`--panel`/`--bg-deep`（面）、`--line`（境界線）、`--gold`（アクセント）、`--btn-bg`/`--btn-fg`（主ボタン）、`--field-bg`/`--field-fg`/`--field-border`（入力欄）、`--hero-glow`（ヒーローの光量）、`--header-bg`/`--header-bg-scrolled`（ヘッダー背景）。
+  - お問い合わせフォーム欄とフッターは**両テーマとも暗い面**で固定（意図的）。この2か所の文字色（`rgba(245,243,238,…)`）は変数化していない＝ライトでも暗い面に載るため、そのままで正しい。
+- **ブラウザ上部の色**：`<meta name="theme-color" id="themeColorMeta">` を JS が現在テーマに合わせて更新する。
+
 ## TODO
 
 - [x] リポジトリ作成・公開（`hayaboosan/desk` → https://hayaboosan.github.io/desk/ ）
