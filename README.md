@@ -4,7 +4,8 @@
 
 Webサイト修正・LP/小規模サイト制作・Excelマクロ（VBA）解読/修正を、**プラットフォームを介さず直接お受けする**ための窓口サイト。`index.html` 1ファイル完結（フレームワーク不使用・静的）。
 
-公開先（予定）：`https://hayaboosan.github.io/<リポジトリ名>/`
+公開先：**https://tegumi.dev/**（お名前.com取得・GitHub Pagesカスタムドメイン・HTTPS強制済み）
+※ `https://hayaboosan.github.io/desk/` は `tegumi.dev` へ自動リダイレクト。
 作品集（ポートフォリオ）：`https://hayaboosan.github.io/portfolio/` ← **これとは別サイト**
 
 ---
