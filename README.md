@@ -24,26 +24,32 @@ Webサイト修正・LP/小規模サイト制作・Excelマクロ（VBA）解読
 
 ---
 
-## セットアップ（フォームの送信先・約2分）
+## フォームの送信先（Formsubmit.co・設定済み）
 
-フォームは [Web3Forms](https://web3forms.com/)（**アカウント登録不要・無料・無制限**）でメール送信する。送信先メールは公開ソースに出ず、ランダムなキー（UUID）だけが載るので、メールアドレスは隠れる。
+フォームは [Formsubmit.co](https://formsubmit.co/)（**アカウント登録不要・CAPTCHA不要・無料**）で、指定メール宛に届く。`index.html` の form action に受信先メールを直書きする方式：
 
-1. <https://web3forms.com/> を開き、**受信したいメールアドレス**（例：Gmail）を入力して「Create Access Key」。
-2. 送られてくる Access Key（`xxxxxxxx-xxxx-...` の形）をコピー。
-3. `index.html` の次の1行のプレースホルダを、そのキーに置き換える：
-   ```html
-   <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
-   ```
-4. 公開後、自分でテスト送信して、メールが届くことを確認する。
+```html
+<form ... action="https://formsubmit.co/hayaboosan@gmail.com" method="POST" ...>
+```
 
-> キー未設定のままだと、送信ボタンを押しても「送信先が未設定です」と表示され、誤って空送信されない作りにしてある。
+- 受信先を変えるときは、この action のメールアドレスを書き換えるだけ。
+- 送信は JS が `https://formsubmit.co/ajax/<メール>` へ POST（ページ遷移なしで完了表示）。JS無効時は通常POSTでFormsubmitの完了ページに飛ぶ。
+- ハニーポット `_honey`・件名 `_subject`・整形 `_template=table`・`_captcha=false` を hidden で設定済み。
+
+### ⚠️ 初回だけ必要：フォームの有効化（1回）
+
+Formsubmit は**最初の送信時に受信先メールへ「Activate Form」リンク付きの確認メール**を送る。**そのリンクを1回クリックするまで送信は配信されない**（それまでは `success:"false"` ＝サイト上は「送信に失敗」と表示される）。
+
+1. 公開サイトのフォームから1回送信する（または自分でテスト送信）。
+2. 受信先メール（`hayaboosan@gmail.com`）に届く Formsubmit の確認メールの **「Activate Form」** をクリック。
+3. 以降、フォーム送信が受信箱に届くようになる。テスト送信して着信を確認。
+
+> メールアドレスが action に直書き＝HTMLソースに見える点に注意（スパム収集対策として `_honey` を設定済み。気になる場合は、Formsubmit のランダム文字列エンドポイントに切り替えるとアドレスを隠せる）。
 
 ### 送信先を別サービスにしたい場合（任意）
 
-- **Formspree**：`<form action="https://formspree.io/f/＜フォームID＞">` に変更（要無料登録）。`access_key` の hidden は削除。
-- **Tally / Googleフォーム**：このフォーム部分を各サービスの埋め込み iframe に差し替えてもよい（送信処理のJSは不要になる）。
-
-いずれも「サイト上で決済まで完結させない（＝見積もり依頼を受けるだけ）」点は変えないこと（下の法務メモ参照）。
+- **Web3Forms**：要アカウント作成だが、メールアドレスを隠せる（hidden の access_key 方式）。
+- **Formspree / Tally / Googleフォーム**：いずれも可。「サイト上で決済まで完結させない（＝見積もり依頼を受けるだけ）」点は変えないこと（下の法務メモ参照）。
 
 ---
 
@@ -82,9 +88,10 @@ gh api -X POST repos/hayaboosan/<リポジトリ名>/pages -f "source[branch]=ma
 - **料金**：`#price` のテーブル。ポートフォリオの「ご依頼について」と数字を揃えてある。
 - **連絡先の見せ方**：今はフォームのみ（メール直書きなし＝スパム対策）。
 
-## TODO（任意）
+## TODO
 
-- [ ] Web3Forms の access_key 設定＋テスト送信
-- [ ] リポジトリ名を決めて公開
-- [ ] 業務委託の発注メール用テンプレ（報酬・期日・支払方法・範囲）を用意
+- [x] リポジトリ作成・公開（`hayaboosan/desk` → https://hayaboosan.github.io/desk/ ）
+- [x] フォーム送信先を Formsubmit（`hayaboosan@gmail.com`）に設定
+- [ ] **Formsubmit の「Activate Form」リンクをクリック（受信箱・1回）→ テスト送信で着信確認**
+- [ ] 業務委託の発注メール用テンプレ（報酬・期日・支払方法・範囲＝フリーランス新法対応）を用意
 - [ ] 屋号を決めたらブランド名を差し替え
