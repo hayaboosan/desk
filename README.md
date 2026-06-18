@@ -109,6 +109,6 @@ gh api -X POST repos/hayaboosan/<リポジトリ名>/pages -f "source[branch]=ma
 - [x] リポジトリ作成・公開（`hayaboosan/desk` → https://hayaboosan.github.io/desk/ ）
 - [x] フォーム送信先を Formsubmit（`hayaboosan@gmail.com`）に設定
 - [x] Formsubmit の「Activate Form」リンクをクリック（2026-06-18 有効化済み・アドレス秘匿のためランダム文字列エンドポイントに切替）
-- [ ] サイトのフォームからテスト送信して着信確認
+- [x] サイトのフォームからテスト送信して着信確認（2026-06-18 着信OK・表組みで正常受信）
 - [ ] 業務委託の発注メール用テンプレ（報酬・期日・支払方法・範囲＝フリーランス新法対応）を用意
 - [ ] 屋号を決めたらブランド名を差し替え
