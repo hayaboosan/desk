@@ -29,14 +29,14 @@ Webサイト修正・LP/小規模サイト制作・Excelマクロ（VBA）解読
 
 ## フォームの送信先（Formsubmit.co・設定済み）
 
-フォームは [Formsubmit.co](https://formsubmit.co/)（**アカウント登録不要・CAPTCHA不要・無料**）で、指定メール宛に届く。`index.html` の form action に受信先メールを直書きする方式：
+フォームは [Formsubmit.co](https://formsubmit.co/)（**アカウント登録不要・CAPTCHA不要・無料**）で、`hayaboosan@gmail.com` 宛に届く。**有効化済み。** メールアドレスをソースに出さないため、form action は直書きではなく Formsubmit のランダム文字列エンドポイントを使用：
 
 ```html
-<form ... action="https://formsubmit.co/hayaboosan@gmail.com" method="POST" ...>
+<form ... action="https://formsubmit.co/0aaf8b208b690a532d785a2145ce0de0" method="POST" ...>
 ```
 
-- 受信先を変えるときは、この action のメールアドレスを書き換えるだけ。
-- 送信は JS が `https://formsubmit.co/ajax/<メール>` へ POST（ページ遷移なしで完了表示）。JS無効時は通常POSTでFormsubmitの完了ページに飛ぶ。
+- このランダム文字列は `hayaboosan@gmail.com` に紐づく（Formsubmit が発行）。受信先を変えるときは、新しいアドレスで再有効化し、発行されるランダム文字列に差し替える。
+- 送信は JS が `https://formsubmit.co/ajax/<エンドポイント>` へ POST（ページ遷移なしで完了表示）。JS無効時は通常POSTでFormsubmitの完了ページに飛ぶ。
 - ハニーポット `_honey`・件名 `_subject`・整形 `_template=table`・`_captcha=false` を hidden で設定済み。
 
 ### ⚠️ 初回だけ必要：フォームの有効化（1回）
@@ -47,7 +47,7 @@ Formsubmit は**最初の送信時に受信先メールへ「Activate Form」リ
 2. 受信先メール（`hayaboosan@gmail.com`）に届く Formsubmit の確認メールの **「Activate Form」** をクリック。
 3. 以降、フォーム送信が受信箱に届くようになる。テスト送信して着信を確認。
 
-> メールアドレスが action に直書き＝HTMLソースに見える点に注意（スパム収集対策として `_honey` を設定済み。気になる場合は、Formsubmit のランダム文字列エンドポイントに切り替えるとアドレスを隠せる）。
+> 2026-06-18 に有効化済み。アドレス秘匿のためランダム文字列エンドポイントに切り替え済み（HTMLソースにメールアドレスは出ない）。スパム対策のハニーポット `_honey` も設定済み。
 
 ### 送信先を別サービスにしたい場合（任意）
 
@@ -61,7 +61,7 @@ Formsubmit は**最初の送信時に受信先メールへ「Activate Form」リ
 ポートフォリオと同じ要領（`hayaboosan` アカウント・`gh` CLI）：
 
 ```sh
-cd C:\Users\Hayabusa\Works\contact-site
+cd C:\Users\Hayabusa\Documents\Claude\Projects\Works\Tegumi\contact-site
 git init
 git add -A
 git commit -m "Add direct order / quote-request site"
@@ -108,6 +108,7 @@ gh api -X POST repos/hayaboosan/<リポジトリ名>/pages -f "source[branch]=ma
 
 - [x] リポジトリ作成・公開（`hayaboosan/desk` → https://hayaboosan.github.io/desk/ ）
 - [x] フォーム送信先を Formsubmit（`hayaboosan@gmail.com`）に設定
-- [ ] **Formsubmit の「Activate Form」リンクをクリック（受信箱・1回）→ テスト送信で着信確認**
+- [x] Formsubmit の「Activate Form」リンクをクリック（2026-06-18 有効化済み・アドレス秘匿のためランダム文字列エンドポイントに切替）
+- [ ] サイトのフォームからテスト送信して着信確認
 - [ ] 業務委託の発注メール用テンプレ（報酬・期日・支払方法・範囲＝フリーランス新法対応）を用意
 - [ ] 屋号を決めたらブランド名を差し替え
