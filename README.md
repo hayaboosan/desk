@@ -29,13 +29,13 @@ Webサイト修正・LP/小規模サイト制作・Excelマクロ（VBA）解読
 
 ## フォームの送信先（Formsubmit.co・設定済み）
 
-フォームは [Formsubmit.co](https://formsubmit.co/)（**アカウント登録不要・CAPTCHA不要・無料**）で、`hayaboosan@gmail.com` 宛に届く。**有効化済み。** メールアドレスをソースに出さないため、form action は直書きではなく Formsubmit のランダム文字列エンドポイントを使用：
+フォームは [Formsubmit.co](https://formsubmit.co/)（**アカウント登録不要・CAPTCHA不要・無料**）で、`info@tegumi.dev` 宛に届く。**有効化済み。** メールアドレスをソースに出さないため、form action は直書きではなく Formsubmit のランダム文字列エンドポイントを使用：
 
 ```html
-<form ... action="https://formsubmit.co/0aaf8b208b690a532d785a2145ce0de0" method="POST" ...>
+<form ... action="https://formsubmit.co/c3cc93691957dd36f36cef5ff303503f" method="POST" ...>
 ```
 
-- このランダム文字列は `hayaboosan@gmail.com` に紐づく（Formsubmit が発行）。受信先を変えるときは、新しいアドレスで再有効化し、発行されるランダム文字列に差し替える。
+- このランダム文字列は `info@tegumi.dev` に紐づく（Formsubmit が発行）。受信先を変えるときは、新しいアドレスで再有効化し、発行されるランダム文字列に差し替える。
 - 送信は JS が `https://formsubmit.co/ajax/<エンドポイント>` へ POST（ページ遷移なしで完了表示）。JS無効時は通常POSTでFormsubmitの完了ページに飛ぶ。
 - ハニーポット `_honey`・件名 `_subject`・整形 `_template=table`・`_captcha=false` を hidden で設定済み。
 
@@ -44,10 +44,10 @@ Webサイト修正・LP/小規模サイト制作・Excelマクロ（VBA）解読
 Formsubmit は**最初の送信時に受信先メールへ「Activate Form」リンク付きの確認メール**を送る。**そのリンクを1回クリックするまで送信は配信されない**（それまでは `success:"false"` ＝サイト上は「送信に失敗」と表示される）。
 
 1. 公開サイトのフォームから1回送信する（または自分でテスト送信）。
-2. 受信先メール（`hayaboosan@gmail.com`）に届く Formsubmit の確認メールの **「Activate Form」** をクリック。
+2. 受信先メール（`info@tegumi.dev`）に届く Formsubmit の確認メールの **「Activate Form」** をクリック。
 3. 以降、フォーム送信が受信箱に届くようになる。テスト送信して着信を確認。
 
-> 2026-06-18 に有効化済み。アドレス秘匿のためランダム文字列エンドポイントに切り替え済み（HTMLソースにメールアドレスは出ない）。スパム対策のハニーポット `_honey` も設定済み。
+> 2026-06-18 に初回有効化（旧 `hayaboosan@gmail.com`）。**2026-06-22 に送信先を `info@tegumi.dev`（さくらのメールボックス）へ変更し再有効化済み**（ランダム文字列も新しいものに差し替え）。アドレス秘匿のためランダム文字列エンドポイントを使用（HTMLソースにメールアドレスは出ない）。スパム対策のハニーポット `_honey` も設定済み。
 
 ### 送信先を別サービスにしたい場合（任意）
 
@@ -107,8 +107,9 @@ gh api -X POST repos/hayaboosan/<リポジトリ名>/pages -f "source[branch]=ma
 ## TODO
 
 - [x] リポジトリ作成・公開（`hayaboosan/desk` → https://hayaboosan.github.io/desk/ ）
-- [x] フォーム送信先を Formsubmit（`hayaboosan@gmail.com`）に設定
-- [x] Formsubmit の「Activate Form」リンクをクリック（2026-06-18 有効化済み・アドレス秘匿のためランダム文字列エンドポイントに切替）
+- [x] フォーム送信先を Formsubmit（`info@tegumi.dev`）に設定（2026-06-22 に旧 `hayaboosan@gmail.com` から変更）
+- [x] Formsubmit の「Activate Form」リンクをクリック（2026-06-18 初回有効化／2026-06-22 info@tegumi.dev で再有効化・ランダム文字列エンドポイントに切替）
 - [x] サイトのフォームからテスト送信して着信確認（2026-06-18 着信OK・表組みで正常受信）
+- [ ] info@tegumi.dev でも本番フォームからのテスト送信で着信を最終確認
 - [ ] 業務委託の発注メール用テンプレ（報酬・期日・支払方法・範囲＝フリーランス新法対応）を用意
 - [ ] 屋号を決めたらブランド名を差し替え
